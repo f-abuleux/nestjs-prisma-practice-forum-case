@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model comment {
+  comment_id  String   @id
+  comment     String
+  postPost_id String
+  createdAt   DateTime
+  updatedAt   DateTime
+  userUser_id String
+  post        post     @relation(fields: [postPost_id], references: [post_id], map: "Comment_postPost_id_fkey")
+  user        user     @relation(fields: [userUser_id], references: [user_id], map: "Comment_userUser_id_fkey")
+
+  @@index([postPost_id], map: "Comment_postPost_id_fkey")
+  @@index([userUser_id], map: "Comment_userUser_id_fkey")
+}
+
+model post {
+  post_id     String    @unique(map: "Post_post_id_key")
+  title       String    @db.VarChar(255)
+  description String?
+  like        Int?      @default(0)
+  userUser_id String
+  createdAt   DateTime
+  updatedAt   DateTime
+  comment     comment[]
+  user        user      @relation(fields: [userUser_id], references: [user_id], map: "Post_userUser_id_fkey")
+
+  @@index([userUser_id], map: "Post_userUser_id_fkey")
+}
+
+model user {
+  user_id   String    @unique(map: "User_user_id_key")
+  username  String    @unique(map: "User_username_key")
+  email     String    @unique(map: "User_email_key")
+  createdAt DateTime
+  updatedAt DateTime
+  password  String    @default("")
+  comment   comment[]
+  post      post[]
+}
