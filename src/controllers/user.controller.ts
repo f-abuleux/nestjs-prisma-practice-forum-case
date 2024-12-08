@@ -1,6 +1,5 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
-import { Request } from "express";
-import { hashPass } from "src/helpers/hashPassword";
+import { randomUUID } from "crypto";
 import { UserService } from "src/services/user.service";
 
 @Controller("users")
@@ -16,10 +15,6 @@ export class UserController {
     @Post('create')
     async createUser(@Body() body: { username: string; email: string; password: string }) {
         try {
-            if (!body.password) {
-                throw new HttpException('Password is required', HttpStatus.BAD_REQUEST);
-            }
-
             const created = await this.userService.createUser({
                 username: body.username,
                 email: body.email,

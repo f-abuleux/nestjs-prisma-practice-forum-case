@@ -5,9 +5,9 @@ import { PrismaService } from "src/prisma.service";
 
 @Injectable()
 export class UserService {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaService) {}
 
-    async createUser(data: Prisma.UserCreateInput) {
+    async createUser(data: Prisma.userCreateInput) {
         try {
             const hashedPassword = await hashPass(data.password);
     
