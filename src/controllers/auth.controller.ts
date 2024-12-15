@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { AuthService } from "src/services/auth.service";
 
 @Controller('users/auth')
@@ -19,7 +19,28 @@ export class AuthController {
             }
         } catch (error) {
             console.log(error)
-            return error.message
+            return {
+                status : error,
+                res : 400
+            }
+        }
+    }
+
+    @Get(':id')
+    async getUserById(@Param("id") id : string, res : Response){
+        try {
+            const findUser = await this.authService.getUserById(id)
+            return {
+                status : "ok",
+                res : 200,
+                findUser
+            }
+        } catch (error) {
+            console.log(error)
+            return {
+                status : error,
+                res : 400
+            }
         }
     }
 

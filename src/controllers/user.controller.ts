@@ -26,14 +26,13 @@ export class UserController {
             return {
                 status: 'ok',
                 res: 200,
-                created
+                created,
             };
         } catch (error) {
-            console.error('Error:', error.message || error);
-            throw new HttpException(
-                error.message || 'Gagal menyimpan data ke database',
-                error.status || HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            return {
+                status : error,
+                res : 400
+            }
         }
     }
 

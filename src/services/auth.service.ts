@@ -23,4 +23,16 @@ export class AuthService{
 
         return { token }
     }
+
+    async getUserById(id : string ){
+        const user = this.prisma.user.findUnique({
+            where : {user_id : id},
+            include : {
+                comment : true,
+                post : true
+            }
+        })
+
+        return user
+    }
 }
