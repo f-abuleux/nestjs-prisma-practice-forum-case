@@ -27,6 +27,7 @@
     "@nestjs/core": "^10.4.4",
     "@nestjs/platform-express": "^10.4.15",
     "@prisma/client": "^6.0.1",
+    "@supabase/supabase-js": "^2.47.7",
     "@types/jsonwebtoken": "^9.0.7",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",

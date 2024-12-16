@@ -19,8 +19,10 @@ export class UserService {
             }
         });
 
-        if (findUser.email) throw "Email already registered";
-        if (findUser.username) throw "Username already registered";
+        if (findUser) {
+            if (findUser.email === data.email) throw "Email already registered"
+            if (findUser.username === data.username) throw "Username already registered"
+        }
 
         const result = await this.prisma.user.create({
             data: {
@@ -28,7 +30,7 @@ export class UserService {
                 password: hashedPassword
             }
         });
-        return result;
+        return {result};
     }
 
 

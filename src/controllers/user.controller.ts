@@ -15,6 +15,14 @@ export class UserController {
     @Post('create')
     async createUser(@Body() body: { username: string; email: string; password: string }) {
         try {
+            if (!body.username || !body.email || !body.password) {
+                return {
+                    status: 'error',
+                    res: 400,
+                    message: 'All fields are required',
+                };
+            }    
+
             const created = await this.userService.createUser({
                 username: body.username,
                 email: body.email,
@@ -35,5 +43,4 @@ export class UserController {
             }
         }
     }
-
 }
