@@ -8,31 +8,32 @@ export class UserService {
     constructor(private prisma: PrismaService) { }
 
     async createUser(data: Prisma.userCreateInput) {
-        const hashedPassword = await hashPass(data.password);
+        return this.prisma.$transaction(async (prisma) => {
+            const hashedPassword = await hashPass(data.password);
 
-        const findUser = await this.prisma.user.findFirst({
-            where: {
-                OR: [
-                    { username: data.username },
-                    { email: data.email }
-                ]
+            const findUser = await prisma.user.findFirst({
+                where: {
+                    OR: [
+                        { username: data.username },
+                        { email: data.email }
+                    ]
+                }
+            });
+
+            if (findUser) {
+                if (findUser.email === data.email) throw "Email already registered";
+                if (findUser.username === data.username) throw "Username already registered";
             }
-        });
 
-        if (findUser) {
-            if (findUser.email === data.email) throw "Email already registered"
-            if (findUser.username === data.username) throw "Username already registered"
-        }
-
-        const result = await this.prisma.user.create({
-            data: {
-                ...data,
-                password: hashedPassword
-            }
+            const result = await prisma.user.create({
+                data: {
+                    ...data,
+                    password: hashedPassword
+                }
+            });
+            return { result };
         });
-        return {result};
     }
-
 
     async getUser() {
         return this.prisma.user.findMany()

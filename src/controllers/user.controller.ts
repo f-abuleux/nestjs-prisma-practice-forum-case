@@ -1,5 +1,4 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
-import { randomUUID } from "crypto";
 import { UserService } from "src/services/user.service";
 
 @Controller("users")
@@ -43,4 +42,4 @@ export class UserController {
             }
         }
     }
-}
+}   
